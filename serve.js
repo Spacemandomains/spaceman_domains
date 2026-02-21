@@ -21,7 +21,13 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+  let urlPath = req.url.split('?')[0];
+  
+  if (urlPath === '/terms') {
+    urlPath = '/terms.html';
+  }
+
+  let filePath = path.join(__dirname, urlPath === '/' ? 'index.html' : urlPath);
   const ext = path.extname(filePath).toLowerCase();
 
   let isSPA = false;
