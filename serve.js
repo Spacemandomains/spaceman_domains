@@ -24,11 +24,13 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
   const ext = path.extname(filePath).toLowerCase();
 
+  let isSPA = false;
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
     filePath = path.join(__dirname, 'index.html');
+    isSPA = true;
   }
 
-  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+  const contentType = isSPA ? 'text/html' : (MIME_TYPES[ext] || 'application/octet-stream');
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
